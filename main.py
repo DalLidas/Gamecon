@@ -1,7 +1,9 @@
 import requests
 import json
+import os
+import time
 
-import Api
+from Api import Api
 
 token = "6689b960e0e1b6689b960e0e1e"
 
@@ -13,7 +15,11 @@ turnTime = 1 # время одного хода
 def main():
     api = Api(testServerURL, token)
 
-    api.Participate()
+    while(1):
+        respons = api.Participate()
+        print(respons)
+
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()

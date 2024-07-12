@@ -1,4 +1,4 @@
-import requests
+import requests # type: ignore
 import json
 
 class Api:
@@ -7,15 +7,18 @@ class Api:
         self.token = token
 
         self.headers = {
-            "Authorization": f"Bearer {token}",
+            # "API Key": "ApiKeyAuth",
+            # "Header parameter name": f"{token}"
+
+            "Authorization": f"X-Auth-Token: {token}",
             "Content-Type": "application/json"
         }
-
 
     def CommandAttack(self, attacked, build, moveBase):
         data = json.JSONEncoder({"attack": attacked, "build": build, "moveBase": moveBase})
         response = requests.post(self.serverURL+ "/lay/zombidef/command", headers=self.headers, json=data)
         print(response)
+        return json.JSONDecoder(response)
 
         # Content type: application/json
         # {
@@ -42,7 +45,8 @@ class Api:
 
     def Participate(self):
         response = requests.put(self.serverURL+ "/play/zombidef/participate", headers=self.headers)
-        print(response)
+        print(response.headers, "||", response._content)
+        return response
 
         # Content type: application/json
         # {
@@ -129,6 +133,7 @@ class Api:
     def GameRounds(self):
         response = requests.get(self.serverURL+ "/rounds/zombidef", headers=self.headers)
         print(response)
+        return json.JSONDecoder(response)
 
         # Content type: application/json
         # {
