@@ -10,7 +10,7 @@ class Api:
             # "API Key": "ApiKeyAuth",
             # "Header parameter name": f"{token}"
 
-            "Authorization": f"X-Auth-Token: {token}",
+            "X-Auth-Token": f"{token}",
             "Content-Type": "application/json"
         }
 
@@ -44,8 +44,9 @@ class Api:
         # }
 
     def Participate(self):
-        response = requests.put(self.serverURL+ "/play/zombidef/participate", headers=self.headers)
-        print(response.headers, "||", response._content)
+        response = requests.put(self.serverURL + "/play/zombidef/participate", headers=self.headers)
+        print(self.serverURL + "/play/zombidef/participate", self.headers)
+        print(response.headers, "||", response._content, "||", response._content.decode('utf-8'))
         return response
 
         # Content type: application/json
