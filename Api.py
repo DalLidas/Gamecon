@@ -55,7 +55,7 @@ class Api:
         # }
 
     def GetDynamicObjects(self):
-        response = requests.get(self.serverURL+ "/play/zombidef/units", headers=self.headers)
+        response = requests.get(self.serverURL + "/play/zombidef/units", headers=self.headers)
         print(response)
         return json.JSONDecoder(response)
     
