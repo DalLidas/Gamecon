@@ -1,39 +1,47 @@
-import requests # type: ignore
-import json
-from datetime import datetime
-
+import requests 
+import os
 import logging
 
 class Api:
-    def __init__(self, serverURL, token, debug = False):
+    def __init__(self, serverURL, token, debugMod = True):
         self.serverURL = serverURL
         self.token = token
+        self.debugMod = debugMod
 
-        # Форматирование времени в "часы:минуты:секунды"
-        # current_time = datetime.now()
-        # formatted_time = current_time.strftime("%H:%M:%S")
-
-        # log = f"{formatted_time}:{method}: {msg}\n\n"
+        # Генерация имени лога
+        index = 0
+        logFileName = "app_requests.log"
+        while 1:
+            if os.path.exists(f"{index}.{logFileName}"): index += 1
+            else:
+                logFileName = f"{index}.{logFileName}"
+                break
 
         # Настройка логгера
-        logging.basicConfig(filename='app.log', 
+        logging.basicConfig(filename=logFileName, 
                             level=logging.INFO, 
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
+        # Хедер
         self.headers = {
             "X-Auth-Token": f"{token}",
             "Content-Type": "application/json"
         }
 
     def Command(self, attacked, build, moveBase):
-        data = json.JSONEncoder({"attack": attacked, "build": build, "moveBase": moveBase})
-        response = requests.post(self.serverURL+ "/lay/zombidef/command", headers=self.headers, json=data)
+        try:
+            response = requests.post(self.serverURL + "/play/zombidef/command", 
+                                    headers=self.headers, 
+                                    json={"attack": attacked, "build": build, "moveBase": moveBase})
 
-        # Логирование
-        logging.info(f"Command: {response._content}")
-        print(f"Command: {response._content}")
+            # Логирование
+            if self.debugMod: 
+                logging.info(f"Command: {response._content}")
+                print(f"Command: {response._content}")
 
-        return response
+            return response.json()
+        except Exception as e:
+            print(e)
 
         # Content type: application/json
         # {
@@ -59,13 +67,17 @@ class Api:
         # }
 
     def Participate(self):
-        response = requests.put(self.serverURL + "/play/zombidef/participate", headers=self.headers)
-        
-        # Логирование
-        logging.info(f"Participate: {response._content}")
-        print(f"Participate: {response._content}")
+        try:
+            response = requests.put(self.serverURL + "/play/zombidef/participate", headers=self.headers)
+            
+            # Логирование
+            if self.debugMod: 
+                logging.info(f"Participate: {response._content}")
+                print(f"Participate: {response._content}")
 
-        return response._content
+            return response.json()
+        except Exception as e:
+            print(e)
 
         # Content type: application/json
         # {
@@ -73,13 +85,17 @@ class Api:
         # }
 
     def GetDynamicObjects(self):
-        response = requests.get(self.serverURL+ "/play/zombidef/units", headers=self.headers)
+        try:
+            response = requests.get(self.serverURL+ "/play/zombidef/units", headers=self.headers)
 
-        # Логирование
-        logging.info(f"GetDynamicObjects: {response._content}")
-        print(f"GetDynamicObjects: {response._content}")
+            # Логирование
+            if self.debugMod: 
+                logging.info(f"GetDynamicObjects: {response._content}")
+                print(f"GetDynamicObjects: {response._content}")
 
-        return response._content
+            return response.json()
+        except Exception as e:
+            print(e)
     
         # {
         #     "base": [
@@ -138,14 +154,18 @@ class Api:
         # }
 
     def GetStaticObjects(self):
-        response = requests.get(self.serverURL+ "/play/zombidef/world", headers=self.headers)
-        
-        # Логирование
-        logging.info(f"GetStaticObjects: {response._content}")
-        print(f"GetStaticObjects: {response._content}")
+        try:
+            response = requests.get(self.serverURL+ "/play/zombidef/world", headers=self.headers)
+            
+            # Логирование
+            if self.debugMod: 
+                logging.info(f"GetStaticObjects: {response._content}")
+                print(f"GetStaticObjects: {response._content}")
 
-        return response
-    
+            return response.json()
+        except Exception as e:
+            print(e)
+
         # {
         #     "realmName": "map1",
         #     "zpots": [
@@ -158,13 +178,17 @@ class Api:
         # }   
 
     def GameRounds(self):
-        response = requests.get(self.serverURL+ "/rounds/zombidef", headers=self.headers)
-        
-        # Логирование
-        logging.info(f"GameRounds: {response._content}")
-        print(f"GameRounds: {response._content}")
+        try:
+            response = requests.get(self.serverURL+ "/rounds/zombidef", headers=self.headers)
+            
+            # Логирование
+            if self.debugMod: 
+                logging.info(f"GameRounds: {response._content}")
+                print(f"GameRounds: {response._content}")
 
-        return response
+            return response.json()
+        except Exception as e:
+            print(e)
 
         # Content type: application/json
         # {
