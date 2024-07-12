@@ -1,24 +1,39 @@
 import requests # type: ignore
 import json
+from datetime import datetime
+
+import logging
 
 class Api:
-    def __init__(self, serverURL, token):
+    def __init__(self, serverURL, token, debug = False):
         self.serverURL = serverURL
         self.token = token
 
-        self.headers = {
-            # "API Key": "ApiKeyAuth",
-            # "Header parameter name": f"{token}"
+        # Форматирование времени в "часы:минуты:секунды"
+        # current_time = datetime.now()
+        # formatted_time = current_time.strftime("%H:%M:%S")
 
+        # log = f"{formatted_time}:{method}: {msg}\n\n"
+
+        # Настройка логгера
+        logging.basicConfig(filename='app.log', 
+                            level=logging.INFO, 
+                            format='%(asctime)s - %(levelname)s - %(message)s')
+
+        self.headers = {
             "X-Auth-Token": f"{token}",
             "Content-Type": "application/json"
         }
 
-    def CommandAttack(self, attacked, build, moveBase):
+    def Command(self, attacked, build, moveBase):
         data = json.JSONEncoder({"attack": attacked, "build": build, "moveBase": moveBase})
         response = requests.post(self.serverURL+ "/lay/zombidef/command", headers=self.headers, json=data)
-        print(response)
-        return json.JSONDecoder(response)
+
+        # Логирование
+        logging.info(f"Command: {response._content}")
+        print(f"Command: {response._content}")
+
+        return response
 
         # Content type: application/json
         # {
@@ -45,9 +60,12 @@ class Api:
 
     def Participate(self):
         response = requests.put(self.serverURL + "/play/zombidef/participate", headers=self.headers)
-        print(self.serverURL + "/play/zombidef/participate", self.headers)
-        print(response.headers, "||", response._content, "||", response._content.decode('utf-8'))
-        return response
+        
+        # Логирование
+        logging.info(f"Participate: {response._content}")
+        print(f"Participate: {response._content}")
+
+        return response._content
 
         # Content type: application/json
         # {
@@ -55,9 +73,13 @@ class Api:
         # }
 
     def GetDynamicObjects(self):
-        response = requests.get(self.serverURL + "/play/zombidef/units", headers=self.headers)
-        print(response)
-        return json.JSONDecoder(response)
+        response = requests.get(self.serverURL+ "/play/zombidef/units", headers=self.headers)
+
+        # Логирование
+        logging.info(f"GetDynamicObjects: {response._content}")
+        print(f"GetDynamicObjects: {response._content}")
+
+        return response._content
     
         # {
         #     "base": [
@@ -116,9 +138,13 @@ class Api:
         # }
 
     def GetStaticObjects(self):
-        response = requests.get(self.serverURL+ "/play/zombidef/participate", headers=self.headers)
-        print(response)
-        return json.JSONDecoder(response)
+        response = requests.get(self.serverURL+ "/play/zombidef/world", headers=self.headers)
+        
+        # Логирование
+        logging.info(f"GetStaticObjects: {response._content}")
+        print(f"GetStaticObjects: {response._content}")
+
+        return response
     
         # {
         #     "realmName": "map1",
@@ -133,8 +159,12 @@ class Api:
 
     def GameRounds(self):
         response = requests.get(self.serverURL+ "/rounds/zombidef", headers=self.headers)
-        print(response)
-        return json.JSONDecoder(response)
+        
+        # Логирование
+        logging.info(f"GameRounds: {response._content}")
+        print(f"GameRounds: {response._content}")
+
+        return response
 
         # Content type: application/json
         # {

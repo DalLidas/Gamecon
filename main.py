@@ -14,11 +14,8 @@ turnTime = 1 # время одного хода
 
 def main():
     api = Api(testServerURL, token)
-
-    while(1):
-        respons = api.Participate()
-        print(respons)
-
+    while 1:
+        response = api.Participate()
         time.sleep(1)
 
 if __name__ == "__main__":
