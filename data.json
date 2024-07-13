@@ -1,0 +1,117 @@
+{
+  "base": [
+    {
+      "attack": 10,
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "isHead": true,
+      "lastAttack": {
+        "x": 1,
+        "y": 1
+      },
+      "range": 5,
+      "x": 1,
+      "y": 1
+    },
+    {
+      "attack": 10,
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "isHead": true,
+      "lastAttack": {
+        "x": 1,
+        "y": 1
+      },
+      "range": 5,
+      "x": 1,
+      "y": 2
+    },
+    {
+      "attack": 10,
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "isHead": true,
+      "lastAttack": {
+        "x": 1,
+        "y": 1
+      },
+      "range": 5,
+      "x": 1,
+      "y": 3
+    },
+    {
+      "attack": 10,
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "isHead": true,
+      "lastAttack": {
+        "x": 1,
+        "y": 1
+      },
+      "range": 5,
+      "x": 2,
+      "y": 3
+    }
+
+  ],
+  "enemyBlocks": [
+    {
+      "attack": 10,
+      "health": 100,
+      "isHead": true,
+      "lastAttack": {
+        "x": 1,
+        "y": 1
+      },
+      "name": "player-test",
+      "x": 4,
+      "y": 5
+    }
+  ],
+  "player": {
+    "enemyBlockKills": 100,
+    "gameEndedAt": "2021-10-10T10:00:00Z",
+    "gold": 100,
+    "name": "player-test",
+    "points": 100,
+    "zombieKills": 100
+  },
+  "realmName": "map1",
+  "turn": 1,
+  "turnEndsInMs": 1000,
+  "zombies": [
+    {
+      "attack": 10,
+      "direction": "up",
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "speed": 10,
+      "type": "normal",
+      "waitTurns": 1,
+      "x": 7,
+      "y": 9
+    },
+    {
+      "attack": 10,
+      "direction": "up",
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "speed": 10,
+      "type": "liner",
+      "waitTurns": 1,
+      "x": 1,
+      "y": 6
+    },
+    {
+      "attack": 10,
+      "direction": "up",
+      "health": 100,
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "speed": 10,
+      "type": "bomber",
+      "waitTurns": 1,
+      "x": 4,
+      "y": 10
+    }
+  ]
+}
