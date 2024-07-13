@@ -83,6 +83,7 @@ def main() -> None:
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
+                    uiThread = threading.Thread(target=ModelAnswer)
                     def ModelAnswer():
                         while not modelStopEvent.is_set():
                             model.Run(unitResponse, worldResponse)

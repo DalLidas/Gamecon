@@ -3,23 +3,36 @@ import dearpygui.dearpygui as dpg
 import json
 from DataClasses import *
 
+
 dpg.create_context()
 dpg.create_viewport(title='Custom Title', width=1280, height=720)
 
-# Чтение данных из JSON файла
-with open('data.json') as f:
-    data = json.load(f)
+UnitsData = None
+BaseData = None
+EnemyBlockdata = None
+ZombieData = None
+
+def getData(worldData, unitsData):
+
+    global UnitsData
+    global BaseData
+    global EnemyBlockdata
+    global ZombieData
+
+    data = unitsData
     UnitsData = Units.from_dict(data)
     BaseData = [Base.from_dict(y) for y in data["base"]]
     EnemyBlockdata = [EnemyBlock.from_dict(y) for y in data["enemyBlocks"]]
     ZombieData = [Zombie.from_dict(y) for y in data["zombies"]]
 
     print(data)
+# Чтение данных из JSON файла
 
-    # Функция для отрисовки клетки
-    def draw_cell(x, y, color):
-        points = [[x, y], [x + 50, y], [x + 50, y + 50], [x, y + 50]]
-        dpg.draw_polygon(points, color=color, fill=color)
+
+# Функция для отрисовки клетки
+def draw_cell(x, y, color):
+    points = [[x, y], [x + 50, y], [x + 50, y + 50], [x, y + 50]]
+    dpg.draw_polygon(points, color=color, fill=color)
 
 # Создание окна
 with dpg.window(label="Main Window", width=1280, height=720):
