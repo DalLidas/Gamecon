@@ -46,7 +46,8 @@ def lagCheck(func):
 def main() -> None:
     # Подключение к серверу
     api = Api(testServerURL, token)
-    model = Model
+    ui = UI()
+    model = Model()
 
     try:
         def worker() -> None:
@@ -78,7 +79,7 @@ def main() -> None:
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
-                    uiThread = threading.Thread(target=UI.getData(worldResponse, ))
+                    uiThread = threading.Thread(target=ui.Update(unitResponse, worldResponse))
                     uiThread.start()
 
                     ans = None

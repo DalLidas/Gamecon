@@ -22,7 +22,7 @@ class UI():
     def __del__(self):
         dpg.destroy_context()
 
-    def Update(self, worldData, unitsData):
+    def Update(self, unitsData, worldata):
         self.UnitsData = Units.from_dict(unitsData)
         self.BaseData = [Base.from_dict(y) for y in unitsData["base"]]
         self.EnemyBlockdata = [EnemyBlock.from_dict(y) for y in unitsData["enemyBlocks"]]
