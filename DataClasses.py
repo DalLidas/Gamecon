@@ -59,16 +59,20 @@ class Zombie:
             yield value
 
 
-@dataclass
-class LastAttack:
-    x: int
-    y: int
+# @dataclass
+# class LastAttack:
+#     x: int
+#     y: int
 
-    @staticmethod
-    def from_dict(obj: Any) -> 'LastAttack':
-        _x = int(obj.get("x"))
-        _y = int(obj.get("y"))
-        return LastAttack(_x, _y)
+#     @staticmethod
+#     def from_dict(obj: Any) -> 'LastAttack':
+#         _x = int(obj.get("x"))
+#         _y = int(obj.get("y"))
+#         return LastAttack(_x, _y)
+    
+#     def __iter__(self):
+#         for value in self.__dict__.values():
+#             yield value
 
 
 @dataclass
@@ -77,7 +81,7 @@ class Base:
     health: int
     id: str
     isHead: bool
-    lastAttack: LastAttack
+    # lastAttack: LastAttack
     range: int
     x: int
     y: int
@@ -88,11 +92,11 @@ class Base:
         _health = int(obj.get("health"))
         _id = str(obj.get("id"))
         _isHead = bool(obj.get("isHead"))
-        _lastAttack = LastAttack.from_dict(obj.get("lastAttack"))
+        # _lastAttack = LastAttack.from_dict(obj.get("lastAttack"))
         _range = int(obj.get("range"))
         _x = int(obj.get("x"))
         _y = int(obj.get("y"))
-        return Base(_attack, _health, _id, _isHead, _lastAttack, _range, _x, _y)
+        return Base(_attack, _health, _id, _isHead, _range, _x, _y)
 
     def __iter__(self):
         for value in self.__dict__.values():
@@ -104,7 +108,7 @@ class EnemyBlock:
     attack: int
     health: int
     isHead: bool
-    lastAttack: LastAttack
+    # lastAttack: LastAttack
     name: str
     x: int
     y: int
@@ -114,11 +118,11 @@ class EnemyBlock:
         _attack = int(obj.get("attack"))
         _health = int(obj.get("health"))
         _isHead = bool(obj.get("isHead"))
-        _lastAttack = LastAttack.from_dict(obj.get("lastAttack"))
+        # _lastAttack = LastAttack.from_dict(obj.get("lastAttack"))
         _name = str(obj.get("name"))
         _x = int(obj.get("x"))
         _y = int(obj.get("y"))
-        return EnemyBlock(_attack, _health, _isHead, _lastAttack, _name, _x, _y)
+        return EnemyBlock(_attack, _health, _isHead, _name, _x, _y)
 
     def __iter__(self):
         for value in self.__dict__.values():

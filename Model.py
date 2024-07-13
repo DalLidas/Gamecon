@@ -1,14 +1,16 @@
 from DataClasses import *
 
 class Model:
-    enemy = []
-    worldMap = [[]]
-
     def __init__(self):
-        pass
+        self.enemy = []
+        self.worldMap = []
+
+        self.BorderBaseCeil = []
+        self.buildPlan = []
+    
 
     def Run(self, unitResponse, worldResponse):
-        return {"attack": self.attack(), "build": self.build(), "moveBase": self.moveHead()}
+        return {"attack": self.attack(unitResponse, worldResponse), "build": self.build(unitResponse, worldResponse), "moveBase": self.moveHead(unitResponse, worldResponse)}
 
     def checkTheMostDanger(self, unitResponse):
         head = unitResponse["base"]["id"]
@@ -37,14 +39,52 @@ class Model:
                 else:
                     return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
                 
-    def attack(self):
+    def attack(self, unitResponse, worldResponse):
         pass
 
-    def build(self, player: Player, base: Base):
-        for gold in range(player.gold):
-            # build 1 cell for each gold
-            pass
+    def newBuildPlan(self, unitResponse, worldResponse):
+        ceils = unitResponse["base"]
+        for ceil1 in ceils:
+            for ceil2 in ceils:
+                # Проверка сверху
+                if int(ceil1["x"]) != int(ceil2["x"]) and int(ceil1["y"] + 1) != int(ceil2["y"]):
+                    self.buildPlan.append(ceil1)
 
-    def moveHead(self):
+                # Проверка снизу
+                if int(ceil1["x"]) != int(ceil2["x"]) and int(ceil1["y"] - 1) != int(ceil2["y"]):
+                    self.buildPlan.append(ceil1)
+
+                # Проверка справа
+                if int(ceil1["x"] + 1) != int(ceil2["x"]) and int(ceil1["y"]) != int(ceil2["y"]):
+                    self.buildPlan.append(ceil1)
+                
+                # Проверка слева
+                if int(ceil1["x"] - 1) != int(ceil2["x"]) and int(ceil1["y"]) != int(ceil2["y"]):
+                    self.buildPlan.append(ceil1)
+
+                
+
+
+        self.BorderBaseCeil
+
+
+    def build(self, unitResponse, worldResponse):
+        player = Player(unitResponse["player"])
+        builds = []
+
+        if len(self.buildPlan) == 0:
+            self.newBuildPlan(unitResponse, worldResponse)
+
+        if player.gold > len(self.buildPlan):
+            self.newBuildPlan(unitResponse, worldResponse)
+        
+        for _ in range(player.gold):
+            builds.append(self.buildPlan.pop)
+        
+        return builds
+            
+            
+
+    def moveHead(self, unitResponse, worldResponse):
         # move head of the base
         pass

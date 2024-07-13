@@ -74,6 +74,6 @@ if __name__ == "__main__":
     with open('data.json') as file:
         data = json.load(file)
         ui = UI()
-        ui.Update({}, data)
+        ui.Update(data, {})
 
 

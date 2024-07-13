@@ -1,4 +1,5 @@
 import os
+import json
 import time
 import threading
 from decouple import config  
@@ -6,7 +7,7 @@ from datetime import datetime
 
 from Api import Api
 from Model import Model
-from UI import UI
+#from UI import UI
 
 token = config("TOKEN")
 mainServerURL = config("MAIN_SERVER_URL")
@@ -46,7 +47,7 @@ def lagCheck(func):
 def main() -> None:
     # Подключение к серверу
     api = Api(testServerURL, token)
-    ui = UI()
+    #ui = UI()
     model = Model()
 
     try:
@@ -56,31 +57,33 @@ def main() -> None:
                 startsInSec = 0
                 repeat = 0
 
-                # рукопожатие (регистрация на раунд)
-                while 1:
-                    time.time
-                    response = lagCheck(api.Participate)
-                    try:
-                        if response["startsInSec"] is not None:
-                            startsInSec = int(response["startsInSec"])
-                            repeat = int(response["repeat"])
-                            break
-                    except:
-                        time.sleep(2)
-                        continue
+                # # рукопожатие (регистрация на раунд)
+                # while 1:
+                #     time.time
+                #     response = lagCheck(api.Participate)
+                #     try:
+                #         if response["startsInSec"] is not None:
+                #             startsInSec = int(response["startsInSec"])
+                #             repeat = int(response["repeat"])
+                #             break
+                #     except:
+                #         time.sleep(2)
+                #         continue
                 
-                print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag} // {safeOffset})")
-                time.sleep(startsInSec - (meanRequestLag-safeOffset)/1000)
+                # print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag} // {safeOffset})")
+                # time.sleep(startsInSec - (meanRequestLag-safeOffset)/1000)
                 
                 # Начало игры
+                repeat = 100
                 turnIndex = 0 
                 while turnIndex <= repeat :
                     print("Начало хода")
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
-                    uiThread = threading.Thread(target=ui.Update(unitResponse, worldResponse))
-                    uiThread.start()
+                    # uiThread = threading.Thread(target=ui.Update(unitResponse, worldResponse))
+                    # uiThread.start()
+                    #ui.Update(unitResponse, worldResponse)
 
                     ans = None
                     def ModelAnswer():
@@ -89,7 +92,7 @@ def main() -> None:
                             ans = model.Run(unitResponse, worldResponse)
                             
                             # Палка в колесе
-                            time.sleep(0.5)
+                            # time.sleep(0.5)
                         print("Модель дала ответ")
 
                     # Создаем событие для остановки потока
@@ -113,12 +116,13 @@ def main() -> None:
 
         def control() -> None:
             while 1:
-                ans = input("Введите: ")
-                print(ans)
+                pass
+                # ans = input("Введите: ")
+                # print(ans)
 
-                if ans == "exit":
-                    ApplicationStopEvent.set()
-                    return
+                # if ans == "exit":
+                #     ApplicationStopEvent.set()
+                #     return
         
         # Создаем событие для остановки потока
         ApplicationStopEvent = threading.Event()
