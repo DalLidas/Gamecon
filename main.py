@@ -53,6 +53,7 @@ def main() -> None:
             while not ApplicationStopEvent.is_set():
                 
                 startsInSec = 0
+                repeat = 0
 
                 # рукопожатие (регистрация на раунд)
                 while 1:
@@ -61,24 +62,24 @@ def main() -> None:
                     try:
                         if response["startsInSec"] is not None:
                             startsInSec = int(response["startsInSec"])
+                            repeat = int(response["repeat"])
                             break
                     except:
                         time.sleep(2)
                         continue
                 
-                print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag}-{safeOffset})")
+                print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag} // {safeOffset})")
                 time.sleep(startsInSec - (meanRequestLag-safeOffset)/1000)
                 
                 # Начало игры
-                repeat = int(response["repeat"])
                 turnIndex = 0 
                 while turnIndex <= repeat :
                     print("Начало хода")
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
-                    # uiThread = threading.Thread(target=UI.getData(worldResponse, ))
-                    # uiThread.start()
+                    uiThread = threading.Thread(target=UI.getData(worldResponse, ))
+                    uiThread.start()
 
                     ans = None
                     def ModelAnswer():
