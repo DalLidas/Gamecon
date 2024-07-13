@@ -18,10 +18,10 @@ class Model:
         return self.checkTheMostDanger(unitResponse)
 
     def checkTheMostDanger(self, unitResponse):
-        head = unitResponse["base"]["id"]
+        head = Base.from_dict(unitResponse["base"])
         zombies = unitResponse["zombies"]
         if len(zombies) <= 1:
-            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), head)
+            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), head.id)
         else:
             zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
