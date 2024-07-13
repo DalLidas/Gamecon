@@ -33,30 +33,30 @@ class UI():
             # Отрисовка базы
             for base_data in self.BaseData:
                 # head - yellow
-                self.draw_cell(base_data.x * 50, base_data.y * 50, [255, 255, 0])
+                self.draw_cell(base_data.x, base_data.y, [255, 255, 0])
                 # base - blue
-                self.draw_cell((base_data.x - base_data.range) * 50, (base_data.y - base_data.range) * 50,
+                self.draw_cell((base_data.x - base_data.range) , (base_data.y - base_data.range) ,
                                [16, 123, 185])
 
             # Отрисовка зомби
             for zombie in self.ZombieData:
                 if zombie.type == "bomber":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [255, 0, 0])
+                    self.draw_cell(zombie.x, zombie.y , [255, 0, 0])
                 if zombie.type == "liner":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [255, 0, 213])
+                    self.draw_cell(zombie.x, zombie.y , [255, 0, 213])
                 if zombie.type == "fast":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [94, 0, 255])
+                    self.draw_cell(zombie.x , zombie.y, [94, 0, 255])
                 if zombie.type == "normal":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [159, 18, 18])
+                    self.draw_cell(zombie.x , zombie.y , [159, 18, 18])
                 if zombie.type == "juggernaut":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [92, 85, 142])
+                    self.draw_cell(zombie.x , zombie.y , [92, 85, 142])
                 if zombie.type == "chaos_knight":
-                    self.draw_cell(zombie.x * 50, zombie.y * 50, [255, 84, 204])
+                    self.draw_cell(zombie.x , zombie.y , [255, 84, 204])
 
             # Отрисовка блоков врага
             for enemy_block_data in self.EnemyBlockdata:
                 color = [255, 145, 0] if enemy_block_data.attack == 40 else [255, 255, 255]
-                self.draw_cell(enemy_block_data.x * 50, enemy_block_data.y * 50, color)
+                self.draw_cell(enemy_block_data.x , enemy_block_data.y , color)
 
         # Запуск GUI
         dpg.setup_dearpygui()
