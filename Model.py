@@ -10,10 +10,11 @@ class Model:
     def Run(self, unitResponse, worldResponse):
         return {"attack": self.attack(), "build": self.build(), "moveBase": self.moveHead()}
 
-    def checkTheMostDanger(self, zombies):
-
+    def checkTheMostDanger(self, unitResponse):
+        head = unitResponse["base"]["id"]
+        zombies = unitResponse["zombies"]
         if len(zombies) <= 1:
-            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), zombies[0].blockId)
+            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), head)
         else:
             zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
@@ -36,7 +37,7 @@ class Model:
                 else:
                     return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
                 
-    def attack():
+    def attack(self):
         pass
 
     def build(self, player: Player, base: Base):
