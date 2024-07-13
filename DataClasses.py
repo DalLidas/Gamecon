@@ -25,9 +25,11 @@ class Point:
 
     def GetDict(self):
         return {"x": self.x, "y": self.y}
-    
+
+
 def AttackTargetOrder(target: Point, blockId: str):
     return {"blockId": blockId, "target": target.GetDict()}
+
 
 @dataclass
 class Zombie:
@@ -69,7 +71,7 @@ class Zombie:
 #         _x = int(obj.get("x"))
 #         _y = int(obj.get("y"))
 #         return LastAttack(_x, _y)
-    
+
 #     def __iter__(self):
 #         for value in self.__dict__.values():
 #             yield value

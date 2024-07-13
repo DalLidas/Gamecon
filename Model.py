@@ -18,31 +18,30 @@ class Model:
         return self.checkTheMostDanger(unitResponse)
 
     def checkTheMostDanger(self, unitResponse):
-        head = Base.from_dict(unitResponse["base"])
+        cells = Base.from_dict(unitResponse["base"])
         zombies = unitResponse["zombies"]
-        if len(zombies) <= 1:
-            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), head.id)
-        else:
-            zombies.sort(key=lambda x: x.waitTurns, reverse=True)
+        zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
+        for cell in cells:
             for zombie in zombies:
-                if zombie.type == "bomber":
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                if pow(pow(zombie.x - cell.x, 2) + pow(zombie.y - cell.y, 2), 0.5):
+                    if zombie.type == "bomber":
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
-                elif zombie.type == "liner":
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                    elif zombie.type == "liner":
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
-                elif zombie.type == "juggernaut":
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                    elif zombie.type == "juggernaut":
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
-                elif zombie.type == "chaos_knight":
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                    elif zombie.type == "chaos_knight":
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
-                elif zombie.type == "fast":
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                    elif zombie.type == "fast":
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
-                else:
-                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                    else:
+                        return AttackTargetOrder(Point(zombie.x, zombie.y), cell.id)
 
     def newBuildPlan(self, unitResponse, worldResponse):
         self.lockedPaces.clear()
