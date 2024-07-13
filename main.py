@@ -57,14 +57,13 @@ def main() -> None:
                 startsInSec = 0
                 repeat = 0
 
-                # # рукопожатие (регистрация на раунд)
+                # рукопожатие (регистрация на раунд)
                 # while 1:
                 #     time.time
                 #     response = lagCheck(api.Participate)
                 #     try:
                 #         if response["startsInSec"] is not None:
                 #             startsInSec = int(response["startsInSec"])
-                #             repeat = int(response["repeat"])
                 #             break
                 #     except:
                 #         time.sleep(2)
@@ -85,29 +84,30 @@ def main() -> None:
                     # uiThread.start()
                     #ui.Update(unitResponse, worldResponse)
 
-                    ans = None
-                    def ModelAnswer():
-                        global ans
-                        while not modelStopEvent.is_set():
-                            ans = model.Run(unitResponse, worldResponse)
+                    ans = model.Run(unitResponse, worldResponse)
+
+                    # def ModelAnswer():
+                    #     global ans
+                    #     while not modelStopEvent.is_set():
                             
-                            # Палка в колесе
-                            # time.sleep(0.5)
-                        print("Модель дала ответ")
+                            
+                    #         # Палка в колесе
+                    #         # time.sleep(0.5)
+                    #     print("Модель дала ответ")
 
-                    # Создаем событие для остановки потока
-                    modelStopEvent = threading.Event()
+                    # # Создаем событие для остановки потока
+                    # modelStopEvent = threading.Event()
 
-                    # Создаем и запускаем поток
-                    modelAnswerThread = threading.Thread(target=ModelAnswer)
-                    modelAnswerThread.start()
+                    # # Создаем и запускаем поток
+                    # modelAnswerThread = threading.Thread(target=ModelAnswer)
+                    # modelAnswerThread.start()
                     
-                    # Устанавливаем таймер для остановки потока модели
-                    timer = threading.Timer((int(unitResponse["turnEndsInMs"]) - safeOffset)/1000, modelStopEvent.set)
-                    timer.start()
+                    # # Устанавливаем таймер для остановки потока модели
+                    # timer = threading.Timer((int(unitResponse["turnEndsInMs"]) - safeOffset)/1000, modelStopEvent.set)
+                    # timer.start()
 
                     # Ждем завершения потока
-                    modelAnswerThread.join()
+                    # modelAnswerThread.join()
                     
                     api.Command(ans)
                     print("Конец хода")
