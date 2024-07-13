@@ -22,7 +22,7 @@ with open('data.json') as f:
         dpg.draw_polygon(points, color=color, fill=color)
 
 # Создание окна
-with dpg.window(label="Main Window"):
+with dpg.window(label="Main Window", width=1280, height=720):
     # Отрисовка базы
     for base_data in BaseData:
         # head - yellow
