@@ -1,9 +1,10 @@
 import requests 
 import os
+
 import logging
 
 class Api:
-    def __init__(self, serverURL, token, debugMod = True):
+    def __init__(self, serverURL, token, *, debugMod = True):
         self.serverURL = serverURL
         self.token = token
         self.debugMod = debugMod
@@ -11,10 +12,13 @@ class Api:
         # Генерация имени лога
         index = 0
         logFileName = "app_requests.log"
+        logDir = "log"
         while 1:
-            if os.path.exists(f"{index}.{logFileName}"): index += 1
+            if not os.path.isdir(logDir): os.makedirs(logDir)
+
+            if os.path.exists(f"log\\{index}.{logFileName}"): index += 1
             else:
-                logFileName = f"{index}.{logFileName}"
+                logFileName = f"log\\{index}.{logFileName}"
                 break
 
         # Настройка логгера

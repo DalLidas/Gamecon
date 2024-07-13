@@ -2,14 +2,14 @@ import requests
 import json
 import os
 import time
+from decouple import config  
 
 from Api import Api
 from Model import Model
 
-token = "6689b960e0e1b6689b960e0e1e"
-
-mainServerURL = "https://games.datsteam.dev"
-testServerURL = "https://games-test.datsteam.dev"
+token = config("TOKEN")
+mainServerURL = config("MAIN_SERVER_URL")
+testServerURL = config("TEST_SERVER_URL")
 
 turnTime = 1 # время одного хода
 
@@ -24,7 +24,8 @@ def main() -> None:
         response = api.Participate()
 
         print(type(response))
-    except:
+    except Exception as e:
+        print(e)
         print("Ёпт, да как так-то. Обещали же что не эбонёт, разрабы паханы полные")
 
     '''
