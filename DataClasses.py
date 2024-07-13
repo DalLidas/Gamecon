@@ -90,16 +90,14 @@ class Base:
 
     @staticmethod
     def from_dict(obj: Any) -> 'Base':
-
-        if obj is not None:
-            _attack = int(obj.get("attack")) 
-            _health = int(obj.get("health"))
-            _id = str(obj.get("id"))
-            _isHead = bool(obj.get("isHead"))
-            # _lastAttack = LastAttack.from_dict(obj.get("lastAttack"))
-            _range = int(obj.get("range"))
-            _x = int(obj.get("x"))
-            _y = int(obj.get("y"))
+        if isinstance(obj, dict):
+            _attack = int(obj.get("attack", 0))  # Default to 0 if "attack" key is not present
+            _health = int(obj.get("health", 0))
+            _id = str(obj.get("id", ""))
+            _isHead = bool(obj.get("isHead", False))
+            _range = int(obj.get("range", 0))
+            _x = int(obj.get("x", 0))
+            _y = int(obj.get("y", 0))
             return Base(_attack, _health, _id, _isHead, _range, _x, _y)
         else:
             return Base()
