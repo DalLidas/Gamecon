@@ -1,5 +1,6 @@
 from DataClasses import *
 
+
 class Model:
     def __init__(self):
         self.enemy = []
@@ -7,10 +8,13 @@ class Model:
 
         self.BorderBaseCeil = []
         self.buildPlan = []
-    
 
     def Run(self, unitResponse, worldResponse):
-        return {"attack": self.attack(unitResponse, worldResponse), "build": self.build(unitResponse, worldResponse), "moveBase": self.moveHead(unitResponse, worldResponse)}
+        return {"attack": self.attack(unitResponse, worldResponse), "build": self.build(unitResponse, worldResponse),
+                "moveBase": self.moveHead(unitResponse, worldResponse)}
+
+    def attack(self, unitResponse, worldResponse):
+        return self.checkTheMostDanger(unitResponse)
 
     def checkTheMostDanger(self, unitResponse):
         head = unitResponse["base"]["id"]
@@ -38,9 +42,6 @@ class Model:
 
                 else:
                     return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
-                
-    def attack(self, unitResponse, worldResponse):
-        pass
 
     def newBuildPlan(self, unitResponse, worldResponse):
         ceils = unitResponse["base"]
@@ -57,16 +58,12 @@ class Model:
                 # Проверка справа
                 if int(ceil1["x"] + 1) != int(ceil2["x"]) and int(ceil1["y"]) != int(ceil2["y"]):
                     self.buildPlan.append(ceil1)
-                
+
                 # Проверка слева
                 if int(ceil1["x"] - 1) != int(ceil2["x"]) and int(ceil1["y"]) != int(ceil2["y"]):
                     self.buildPlan.append(ceil1)
 
-                
-
-
         self.BorderBaseCeil
-
 
     def build(self, unitResponse, worldResponse):
         player = Player(unitResponse["player"])
@@ -77,13 +74,11 @@ class Model:
 
         if player.gold > len(self.buildPlan):
             self.newBuildPlan(unitResponse, worldResponse)
-        
+
         for _ in range(player.gold):
             builds.append(self.buildPlan.pop)
-        
+
         return builds
-            
-            
 
     def moveHead(self, unitResponse, worldResponse):
         # move head of the base
