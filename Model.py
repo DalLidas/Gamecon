@@ -1,3 +1,6 @@
+from DataClasses import *
+
+
 class Point:
     x = 0
     y = 0
@@ -12,11 +15,14 @@ class Point:
 
 def AttackTargetOrder(target: Point, blockId: str):
     return {"blockId": blockId, "target": target.GetDict()}
+    #TODO: закинуть в пут запрос на атаку
 
-#TODO: что такое blockId? Вроде в канфе писали про то, что это имя нашей базы, но это как-то странно... Мнда...
+
+# TODO: что такое blockId? Вроде в канфе писали про то, что это имя нашей базы, но это как-то странно... Мнда...
 
 class enemy:
-    def __init__(self, point: Point, id: str, type: str, hp: int, attack: int, direction: str, speed: int, waitTurns: int):
+    def __init__(self, point: Point, id: str, type: str, hp: int, attack: int, direction: str, speed: int,
+                 waitTurns: int):
         self.point = point
         self.id = id
         self.type = type
@@ -26,6 +32,7 @@ class enemy:
         self.speed = speed
         self.waitTurns = waitTurns
 
+
 class Model:
     enemy = []
     worldMap = [[]]
@@ -34,11 +41,8 @@ class Model:
         pass
 
     def Run(self, unitResponse, worldResponse):
-        
-
 
         return {}
-
 
     def checkTheMostDanger(self, zombies):
 
@@ -67,3 +71,10 @@ class Model:
                 else:
                     return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
+    def build(self, player: Player, base: Base):
+        for gold in range(player.gold):
+            # build 1 cell for each gold
+            pass
+
+    def moveHead(self):
+        pass
