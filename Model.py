@@ -63,19 +63,19 @@ class Model:
                 pLeft = Point((ceil1["x"] - 1), int(ceil1["y"]))
 
                 # Проверка сверху
-                if pUp.x != int(ceil2["x"]) and pUp.y != int(ceil2["y"]) and not pUp in self.lockedPaces:
+                if pUp.x != int(ceil2["x"]) and pUp.y != int(ceil2["y"]) and pUp not in self.lockedPaces:
                     self.buildPlan.append(pUp)
 
                 # Проверка снизу
-                if pDown.x != int(ceil2["x"]) and pDown.y != int(ceil2["y"]) and not pDown in self.lockedPaces:
+                if pDown.x != int(ceil2["x"]) and pDown.y != int(ceil2["y"]) and pDown not in self.lockedPaces:
                     self.buildPlan.append(pDown)
 
                 # Проверка справа
-                if pRight.x != int(ceil2["x"]) and pRight.y != int(ceil2["y"]) and not pRight in self.lockedPaces:
+                if pRight.x != int(ceil2["x"]) and pRight.y != int(ceil2["y"]) and pRight not in self.lockedPaces:
                     self.buildPlan.append(pRight)
                 
                 # Проверка слева
-                if pLeft.x != int(ceil2["x"]) and pLeft.y != int(ceil2["y"]) and not pLeft in self.lockedPaces:
+                if pLeft.x != int(ceil2["x"]) and pLeft.y != int(ceil2["y"]) and pLeft not in self.lockedPaces:
                     self.buildPlan.append(pLeft)
 
         
