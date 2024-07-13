@@ -3,6 +3,32 @@ from typing import Any
 from typing import List
 
 
+# class enemy:
+#     def __init__(self, point: Point, id: str, type: str, hp: int, attack: int, direction: str, speed: int,
+#                  waitTurns: int):
+#         self.point = point
+#         self.id = id
+#         self.type = type
+#         self.hp = hp
+#         self.attack = attack
+#         self.direction = direction
+#         self.speed = speed
+#         self.waitTurns = waitTurns
+
+class Point:
+    x = 0
+    y = 0
+
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+
+    def GetDict(self):
+        return {"x": self.x, "y": self.y}
+    
+def AttackTargetOrder(target: Point, blockId: str):
+    return {"blockId": blockId, "target": target.GetDict()}
+
 @dataclass
 class Zombie:
     attack: int

@@ -1,38 +1,5 @@
 from DataClasses import *
 
-
-class Point:
-    x = 0
-    y = 0
-
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
-
-    def GetDict(self):
-        return {"x": self.x, "y": self.y}
-
-
-def AttackTargetOrder(target: Point, blockId: str):
-    return {"blockId": blockId, "target": target.GetDict()}
-    #TODO: закинуть в пут запрос на атаку
-
-
-# TODO: что такое blockId? Вроде в канфе писали про то, что это имя нашей базы, но это как-то странно... Мнда...
-
-class enemy:
-    def __init__(self, point: Point, id: str, type: str, hp: int, attack: int, direction: str, speed: int,
-                 waitTurns: int):
-        self.point = point
-        self.id = id
-        self.type = type
-        self.hp = hp
-        self.attack = attack
-        self.direction = direction
-        self.speed = speed
-        self.waitTurns = waitTurns
-
-
 class Model:
     enemy = []
     worldMap = [[]]
@@ -41,15 +8,13 @@ class Model:
         pass
 
     def Run(self, unitResponse, worldResponse):
-
-        return {}
+        return {"attack": self.attack(), "build": self.build(), "moveBase": self.moveHead()}
 
     def checkTheMostDanger(self, zombies):
 
         if len(zombies) <= 1:
             return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), zombies[0].blockId)
         else:
-
             zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
             for zombie in zombies:
@@ -70,6 +35,9 @@ class Model:
 
                 else:
                     return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
+                
+    def attack():
+        pass
 
     def build(self, player: Player, base: Base):
         for gold in range(player.gold):

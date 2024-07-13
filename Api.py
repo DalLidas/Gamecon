@@ -33,11 +33,11 @@ class Api:
             "Content-Type": "application/json"
         }
 
-    def Command(self, attacked, build, moveBase):
+    def Command(self, data):
         try:
             response = requests.post(self.serverURL + "/play/zombidef/command", 
                                     headers=self.headers, 
-                                    json={"attack": attacked, "build": build, "moveBase": moveBase})
+                                    json=data)
 
             # Логирование
             if self.debugMod: 
@@ -78,7 +78,7 @@ class Api:
             # Логирование
             if self.debugMod: 
                 logging.info(f"Participate - {response._content}")
-                #print(f"Participate - {response._content}")
+                print(f"Participate - {response._content}")
 
             return response.json()
         except Exception as e:

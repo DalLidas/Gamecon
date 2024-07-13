@@ -24,14 +24,14 @@ allRequestTime = 0 # ms
 allRequestCount = 0 # int
 
 meanRequestLag = 0 # ms
-safeOffset = 10 # ms
+safeOffset = 25 # ms
 
 def lagCheck(func):
     global allRequestTime
     global allRequestCount
     global meanRequestLag
 
-    if allRequestCount < 100:  
+    if allRequestCount < 25:  
         st = time.time() * 1000
         response = func()
         executeTime = st - time.time() * 1000
@@ -48,16 +48,7 @@ def main() -> None:
     api = Api(testServerURL, token)
     model = Model
 
-    # Предзагрузка раундов
-    rounds = lagCheck(Api.GameRounds())["rounds"]
-
     try:
-        #
-        def roundsViewer() -> None:
-            while not ApplicationStopEvent.is_set():
-                rounds = lagCheck(Api.GameRounds())["rounds"]
-                time.sleep(160)
-
         def worker() -> None:
             while not ApplicationStopEvent.is_set():
                 
@@ -66,29 +57,34 @@ def main() -> None:
                 # рукопожатие (регистрация на раунд)
                 while 1:
                     time.time
-                    response = lagCheck(api.Participate())
+                    response = lagCheck(api.Participate)
                     try:
                         if response["startsInSec"] is not None:
                             startsInSec = int(response["startsInSec"])
                             break
                     except:
+                        time.sleep(2)
                         continue
                 
                 print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag}-{safeOffset})")
                 time.sleep(startsInSec - (meanRequestLag-safeOffset)/1000)
                 
                 # Начало игры
-                while 1:
+                repeat = int(response["repeat"])
+                turnIndex = 0 
+                while turnIndex <= repeat :
                     print("Начало хода")
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
-                    uiThread = threading.Thread(target=UI.getData(worldResponse, unitResponse))
-                    uiThread.start()
+                    # uiThread = threading.Thread(target=UI.getData(worldResponse, ))
+                    # uiThread.start()
 
+                    ans = None
                     def ModelAnswer():
+                        global ans
                         while not modelStopEvent.is_set():
-                            model.Run(unitResponse, worldResponse)
+                            ans = model.Run(unitResponse, worldResponse)
                             
                             # Палка в колесе
                             time.sleep(0.5)
@@ -102,17 +98,15 @@ def main() -> None:
                     modelAnswerThread.start()
                     
                     # Устанавливаем таймер для остановки потока модели
-                    timer = threading.Timer((unitResponse["turnEndsInMs"] - safeOffset)/1000, modelStopEvent.set)
+                    timer = threading.Timer((int(unitResponse["turnEndsInMs"]) - safeOffset)/1000, modelStopEvent.set)
                     timer.start()
 
                     # Ждем завершения потока
                     modelAnswerThread.join()
-
-                    #TODO: получаем от модели ответ и шлём с помощью api.Command()
+                    
+                    api.Command(ans)
                     print("Конец хода")
-
-                    # Временный брек
-                    break
+                    turnIndex += 1
                 
 
         def control() -> None:
@@ -128,10 +122,8 @@ def main() -> None:
         ApplicationStopEvent = threading.Event()
 
         # Создаем и запускаем поток
-        roundsViewerThread = threading.Thread(target=threading.Thread(target=roundsViewer))
         workerThread = threading.Thread(target=worker)
         controlThread = threading.Thread(target=control)
-        roundsViewerThread.start()
         workerThread.start()
         controlThread.start()
 
