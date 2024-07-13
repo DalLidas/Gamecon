@@ -148,6 +148,36 @@ class Units:
         for value in self.__dict__.values():
             yield value
 
-# Example Usage
-# jsonstring = json.loads(myjsonstring)
-# root = Root.from_dict(jsonstring)
+
+@dataclass
+class Zpot:
+    x: int
+    y: int
+    type: str
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'Zpot':
+        _x = int(obj.get("x"))
+        _y = int(obj.get("y"))
+        _type = str(obj.get("type"))
+        return Zpot(_x, _y, _type)
+
+    def __iter__(self):
+        for value in self.__dict__.values():
+            yield value
+
+
+@dataclass
+class World:
+    realmName: str
+    zpots: List[Zpot]
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'World':
+        _realmName = str(obj.get("realmName"))
+        _zpots = [Zpot.from_dict(y) for y in obj.get("zpots")]
+        return World(_realmName, _zpots)
+
+    def __iter__(self):
+        for value in self.__dict__.values():
+            yield value
