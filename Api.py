@@ -26,6 +26,7 @@ class Api:
                             level=logging.INFO, 
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
+
         # Хедер
         self.headers = {
             "X-Auth-Token": f"{token}",
@@ -40,8 +41,8 @@ class Api:
 
             # Логирование
             if self.debugMod: 
-                logging.info(f"Command: {response._content}")
-                print(f"Command: {response._content}")
+                logging.info(f"Command - {response._content}")
+                #print(f"Command - {response._content}")
 
             return response.json()
         except Exception as e:
@@ -76,8 +77,8 @@ class Api:
             
             # Логирование
             if self.debugMod: 
-                logging.info(f"Participate: {response._content}")
-                print(f"Participate: {response._content}")
+                logging.info(f"Participate - {response._content}")
+                #print(f"Participate - {response._content}")
 
             return response.json()
         except Exception as e:
@@ -88,14 +89,14 @@ class Api:
         #     "startsInSec": 300
         # }
 
-    def GetDynamicObjects(self):
+    def GetUnitsObjects(self):
         try:
             response = requests.get(self.serverURL+ "/play/zombidef/units", headers=self.headers)
 
             # Логирование
             if self.debugMod: 
-                logging.info(f"GetDynamicObjects: {response._content}")
-                print(f"GetDynamicObjects: {response._content}")
+                logging.info(f"GetUnitsObjects - {response._content}")
+                #print(f"GetUnitsObjects - {response._content}")
 
             return response.json()
         except Exception as e:
@@ -157,14 +158,14 @@ class Api:
         #     ]
         # }
 
-    def GetStaticObjects(self):
+    def GetWorldObjects(self):
         try:
             response = requests.get(self.serverURL+ "/play/zombidef/world", headers=self.headers)
             
             # Логирование
             if self.debugMod: 
-                logging.info(f"GetStaticObjects: {response._content}")
-                print(f"GetStaticObjects: {response._content}")
+                logging.info(f"GetWorldObjects - {response._content}")
+                #print(f"GetWorldObjects - {response._content}")
 
             return response.json()
         except Exception as e:
@@ -187,8 +188,8 @@ class Api:
             
             # Логирование
             if self.debugMod: 
-                logging.info(f"GameRounds: {response._content}")
-                print(f"GameRounds: {response._content}")
+                logging.info(f"GameRounds - {response._content}")
+                #print(f"GameRounds - {response._content}")
 
             return response.json()
         except Exception as e:

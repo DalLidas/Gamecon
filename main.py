@@ -2,6 +2,8 @@ import os
 import time
 import threading
 from decouple import config  
+from datetime import datetime
+
 
 from Api import Api
 from Model import Model
@@ -10,67 +12,116 @@ token = config("TOKEN")
 mainServerURL = config("MAIN_SERVER_URL")
 testServerURL = config("TEST_SERVER_URL")
 
+# Предстоящие раунды
+rounds = []
+
 # Всё время должно быть в ms 
 startTime = 0
 endTime = 0
 turnTime = 0
 
-meanRequestLag = 0
-safeOffset = 10
+allRequestTime = 0 # ms
+allRequestCount = 0 # int
 
+meanRequestLag = 0 # ms
+safeOffset = 10 # ms
+
+def lagCheck(func):
+    if allRequestCount < 100:  
+        st = time.time() * 1000
+        response = func()
+        executeTime = st - time.time() * 1000
+        print(executeTime)
+        allRequestTime += executeTime
+        allRequestCount += 1
+        meanRequestLag = allRequestTime // allRequestCount
+        return response
+    else:
+        return func()
 
 def main() -> None:
+    # Подключение к серверу
+    api = Api(testServerURL, token)
+
+    # Предзагрузка раундов
+    rounds = lagCheck(Api.GameRounds())["rounds"]
+
     try:
+        #
+        def roundsViewer() -> None:
+            while not ApplicationStopEvent.is_set():
+                rounds = lagCheck(Api.GameRounds())["rounds"]
+                time.sleep(160)
+
         def worker() -> None:
-            while not workerStopEvent.is_set():
-                api = Api(testServerURL, token)
-                #response = api.GameRounds()
-                response = api.Participate()
-                time.sleep(1)
+            while not ApplicationStopEvent.is_set():
+                
+                startsInSec = 0
 
-                # while 1:d
-                #     response = api.Participate()
-                #     time.sleep(1)
+                # рукопожатие (регистрация на раунд)
+                while 1:
+                    time.time
+                    response = lagCheck(api.Participate())
+                    try:
+                        if response["startsInSec"] is not None:
+                            startsInSec = int(response["startsInSec"])
+                            break
+                    except:
+                        continue
+                
+                print(f"Ожидание раунда(startsInSec:{startsInSec}, lag:{meanRequestLag}-{safeOffset})")
+                time.sleep(startsInSec - (meanRequestLag-safeOffset)/1000)
+                
+                # Начало игры
+                while 1:
+                    print("Начало хода")
+                    unitResponse = lagCheck(api.GetUnitsObjects)
+                    worldResponse = lagCheck(api.GetWorldObjects)
 
+                    def ModelAnswer():
+                        while not modelStopEvent.is_set():
+                            #Модель
+                            time.sleep(0.5)
+                        print("Модель дала ответ")
 
-                #model.
-                # def ModelAnswer():
-                #     while not modelStopEvent.is_set():
-                #         #model.
-                #         time.sleep(0.5)
-                #     print("Модель дала ответ")
+                    # Создаем событие для остановки потока
+                    modelStopEvent = threading.Event()
 
-                # # Создаем событие для остановки потока
-                # modelStopEvent = threading.Event()
+                    # Создаем и запускаем поток
+                    modelAnswerThread = threading.Thread(target=ModelAnswer)
+                    modelAnswerThread.start()
+                    
+                    # Устанавливаем таймер для остановки потока модели
+                    timer = threading.Timer((unitResponse["turnEndsInMs"] - safeOffset)/1000, modelStopEvent.set)
+                    timer.start()
 
-                # # Создаем и запускаем поток
-                # modelAnswerThread = threading.Thread(target=ModelAnswer)
-                # modelAnswerThread.start()
+                    # Ждем завершения потока
+                    modelAnswerThread.join()
 
-                # # Устанавливаем таймер на 5 секунд для остановки потока
-                # timer = threading.Timer(0.6, modelStopEvent.set)
-                # timer.start()
+                    #TODO: получаем от модели ответ и шлём с помощью api.Command()
+                    print("Конец хода")
 
-                # # Ждем завершения потока
-                # modelAnswerThread.join()
-                # print("Программа завершена")
+                    # Временный брек
+                    break
+                
 
-        def control():
+        def control() -> None:
             while 1:
                 ans = input("Введите: ")
                 print(ans)
 
                 if ans == "exit":
-                    workerStopEvent.set()
+                    ApplicationStopEvent.set()
                     return
-
-
-         # Создаем событие для остановки потока
-        workerStopEvent = threading.Event()
+        
+        # Создаем событие для остановки потока
+        ApplicationStopEvent = threading.Event()
 
         # Создаем и запускаем поток
+        roundsViewerThread = threading.Thread(target=threading.Thread(target=roundsViewer))
         workerThread = threading.Thread(target=worker)
         controlThread = threading.Thread(target=control)
+        roundsViewerThread.start()
         workerThread.start()
         controlThread.start()
 
