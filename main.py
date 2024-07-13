@@ -27,6 +27,10 @@ meanRequestLag = 0 # ms
 safeOffset = 10 # ms
 
 def lagCheck(func):
+    global allRequestTime
+    global allRequestCount
+    global meanRequestLag
+
     if allRequestCount < 100:  
         st = time.time() * 1000
         response = func()
@@ -82,7 +86,7 @@ def main() -> None:
                     def ModelAnswer():
                         while not modelStopEvent.is_set():
                             model.Run(unitResponse, worldResponse)
-
+                            
                             # Палка в колесе
                             time.sleep(0.5)
                         print("Модель дала ответ")
