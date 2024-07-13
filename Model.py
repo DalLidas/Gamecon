@@ -18,8 +18,8 @@ class Model:
         return self.checkTheMostDanger(unitResponse)
 
     def checkTheMostDanger(self, unitResponse):
-        cells = Base.from_dict(unitResponse["base"])
-        zombies = unitResponse["zombies"]
+        cells = [Base.from_dict(y) for y in unitResponse["base"]]
+        zombies = [Zombie.from_dict(y) for y in unitResponse["zombies"]]
         zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
         for cell in cells:
