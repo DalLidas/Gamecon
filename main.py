@@ -57,14 +57,13 @@ def main() -> None:
                 startsInSec = 0
                 repeat = 0
 
-                # # рукопожатие (регистрация на раунд)
+                # рукопожатие (регистрация на раунд)
                 # while 1:
                 #     time.time
                 #     response = lagCheck(api.Participate)
                 #     try:
                 #         if response["startsInSec"] is not None:
                 #             startsInSec = int(response["startsInSec"])
-                #             repeat = int(response["repeat"])
                 #             break
                 #     except:
                 #         time.sleep(2)
@@ -86,7 +85,7 @@ def main() -> None:
                     #ui.Update(unitResponse, worldResponse)
 
                     ans = model.Run(unitResponse, worldResponse)
-                    
+
                     # def ModelAnswer():
                     #     global ans
                     #     while not modelStopEvent.is_set():

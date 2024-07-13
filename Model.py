@@ -11,8 +11,11 @@ class Model:
         self.buildPlan = []
 
     def Run(self, unitResponse, worldResponse):
-        return {"attack": self.attack(unitResponse, worldResponse), "build": self.build(unitResponse, worldResponse),
-                "moveBase": self.moveHead(unitResponse, worldResponse)}
+        attak = self.attack(unitResponse, worldResponse)
+        build = self.build(unitResponse, worldResponse)
+        move = self.moveHead(unitResponse, worldResponse)
+
+        return {"attack": attak, "build": build, "moveBase": move}
 
     def attack(self, unitResponse, worldResponse):
         return self.checkTheMostDanger(unitResponse)
