@@ -1,7 +1,6 @@
-import requests
-import json
 import os
 import time
+import threading
 from decouple import config  
 
 from Api import Api
@@ -11,19 +10,70 @@ token = config("TOKEN")
 mainServerURL = config("MAIN_SERVER_URL")
 testServerURL = config("TEST_SERVER_URL")
 
-turnTime = 1 # время одного хода
+# Всё время должно быть в ms 
+startTime = 0
+endTime = 0
+turnTime = 0
+
+meanRequestLag = 0
+safeOffset = 10
+
 
 def main() -> None:
     try:
-        api = Api(testServerURL, token)
+        def worker() -> None:
+            while not workerStopEvent.is_set():
+                api = Api(testServerURL, token)
+                #response = api.GameRounds()
+                response = api.Participate()
+                time.sleep(1)
 
-        # while 1:
-        #     response = api.Participate()
-        #     time.sleep(1)
-        
-        response = api.Participate()
+                # while 1:d
+                #     response = api.Participate()
+                #     time.sleep(1)
 
-        print(type(response))
+
+                #model.
+                # def ModelAnswer():
+                #     while not modelStopEvent.is_set():
+                #         #model.
+                #         time.sleep(0.5)
+                #     print("Модель дала ответ")
+
+                # # Создаем событие для остановки потока
+                # modelStopEvent = threading.Event()
+
+                # # Создаем и запускаем поток
+                # modelAnswerThread = threading.Thread(target=ModelAnswer)
+                # modelAnswerThread.start()
+
+                # # Устанавливаем таймер на 5 секунд для остановки потока
+                # timer = threading.Timer(0.6, modelStopEvent.set)
+                # timer.start()
+
+                # # Ждем завершения потока
+                # modelAnswerThread.join()
+                # print("Программа завершена")
+
+        def control():
+            while 1:
+                ans = input("Введите: ")
+                print(ans)
+
+                if ans == "exit":
+                    workerStopEvent.set()
+                    return
+
+
+         # Создаем событие для остановки потока
+        workerStopEvent = threading.Event()
+
+        # Создаем и запускаем поток
+        workerThread = threading.Thread(target=worker)
+        controlThread = threading.Thread(target=control)
+        workerThread.start()
+        controlThread.start()
+
     except Exception as e:
         print(e)
         print("Ёпт, да как так-то. Обещали же что не эбонёт, разрабы паханы полные")
