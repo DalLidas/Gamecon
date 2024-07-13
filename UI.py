@@ -1,5 +1,6 @@
-import dearpygui.dearpygui as dpg
 import json
+
+import dearpygui.dearpygui as dpg
 
 from DataClasses import *
 
@@ -27,14 +28,15 @@ class UI():
         self.EnemyBlockdata = [EnemyBlock.from_dict(y) for y in unitsData["enemyBlocks"]]
         self.ZombieData = [Zombie.from_dict(y) for y in unitsData["zombies"]]
 
-                # Создание окна
+        # Создание окна
         with dpg.window(label="self.title", width=1280, height=720):
             # Отрисовка базы
             for base_data in self.BaseData:
                 # head - yellow
                 self.draw_cell(base_data.x * 50, base_data.y * 50, [255, 255, 0])
                 # base - blue
-                self.draw_cell((base_data.x - base_data.range) * 50, (base_data.y - base_data.range) * 50, [16, 123, 185])
+                self.draw_cell((base_data.x - base_data.range) * 50, (base_data.y - base_data.range) * 50,
+                               [16, 123, 185])
 
             # Отрисовка зомби
             for zombie in self.ZombieData:
@@ -55,7 +57,7 @@ class UI():
             for enemy_block_data in self.EnemyBlockdata:
                 color = [255, 145, 0] if enemy_block_data.attack == 40 else [255, 255, 255]
                 self.draw_cell(enemy_block_data.x * 50, enemy_block_data.y * 50, color)
-                
+
         # Запуск GUI
         dpg.setup_dearpygui()
         dpg.show_viewport()
@@ -69,7 +71,10 @@ class UI():
 
 
 if __name__ == "__main__":
-    file = json.loads("data.json")
-    
-    ui = UI()
-    ui.Update({}, file)
+
+    with open('data.json') as file:
+        data = json.load(file)
+        ui = UI()
+        ui.Update({}, data)
+
+
