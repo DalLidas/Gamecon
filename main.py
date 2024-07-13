@@ -46,7 +46,7 @@ def lagCheck(func):
 
 def main() -> None:
     # Подключение к серверу
-    api = Api(testServerURL, token)
+    api = Api(mainServerURL, token)
     #ui = UI()
     model = Model()
 
