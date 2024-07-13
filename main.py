@@ -4,9 +4,9 @@ import threading
 from decouple import config  
 from datetime import datetime
 
-
 from Api import Api
 from Model import Model
+from UI import UI
 
 token = config("TOKEN")
 mainServerURL = config("MAIN_SERVER_URL")
@@ -83,7 +83,9 @@ def main() -> None:
                     unitResponse = lagCheck(api.GetUnitsObjects)
                     worldResponse = lagCheck(api.GetWorldObjects)
 
-                    uiThread = threading.Thread(target=ModelAnswer)
+                    uiThread = threading.Thread(target=UI.getData(worldResponse, unitResponse))
+                    uiThread.start()
+
                     def ModelAnswer():
                         while not modelStopEvent.is_set():
                             model.Run(unitResponse, worldResponse)
