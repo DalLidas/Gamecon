@@ -1,19 +1,17 @@
 import dearpygui.dearpygui as dpg
 
-import json
 from DataClasses import *
-
 
 dpg.create_context()
 dpg.create_viewport(title='Custom Title', width=1280, height=720)
 
-UnitsData = None
-BaseData = None
-EnemyBlockdata = None
-ZombieData = None
+UnitsData = Units.from_dict({})
+BaseData = Base.from_dict({})
+EnemyBlockdata = EnemyBlock.from_dict({})
+ZombieData = Zombie.from_dict({})
+
 
 def getData(worldData, unitsData):
-
     global UnitsData
     global BaseData
     global EnemyBlockdata
@@ -26,6 +24,8 @@ def getData(worldData, unitsData):
     ZombieData = [Zombie.from_dict(y) for y in data["zombies"]]
 
     print(data)
+
+
 # Чтение данных из JSON файла
 
 
@@ -33,6 +33,7 @@ def getData(worldData, unitsData):
 def draw_cell(x, y, color):
     points = [[x, y], [x + 50, y], [x + 50, y + 50], [x, y + 50]]
     dpg.draw_polygon(points, color=color, fill=color)
+
 
 # Создание окна
 with dpg.window(label="Main Window", width=1280, height=720):
@@ -61,8 +62,8 @@ with dpg.window(label="Main Window", width=1280, height=720):
 
     # Отрисовка блоков врага
     for enemy_block_data in EnemyBlockdata:
-        color = [0, 0, 0] if enemy_block_data.attack == 40 else [255, 255,
-                                                                    255]
+        color = [255, 145, 0] if enemy_block_data.attack == 40 else [255, 255,
+                                                                     255]
         draw_cell(enemy_block_data.x * 50, enemy_block_data.y * 50, color)
 
 # Запуск GUI
