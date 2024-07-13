@@ -1,13 +1,14 @@
 class Point:
     x = 0
     y = 0
-    
+
     def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
 
     def GetDict(self):
-        return {"x": self.x, "y": self.y} 
+        return {"x": self.x, "y": self.y}
+
 
 def AttackTargetOrder(target: Point, blockId: str):
     return {"blockId": blockId, "target": target.GetDict()}
@@ -33,37 +34,30 @@ class Model:
         self.x = x
         self.y = y
 
-    def first_strategy(self):
-        move_request_map = {
-            {"x": self.x + 2,
-             "y": self.y},
+    def checkTheMostDanger(self, zombies):
 
-            {"x": self.x + 2,
-             "y": self.y - 1},
+        if len(zombies) <= 1:
+            return AttackTargetOrder(Point(zombies[0].x, zombies[0].y), zombies[0].blockId)
+        else:
 
-            {"x": self.x,
-             "y": self.y - 1},
+            zombies.sort(key=lambda x: x.waitTurns, reverse=True)
 
-            {"x": self.x + 1,
-             "y": self.y + 1},
+            for zombie in zombies:
+                if zombie.type == "bomber":
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x - 1,
-             "y": self.y},
+                elif zombie.type == "liner":
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x - 1,
-             "y": self.y},
+                elif zombie.type == "juggernaut":
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x,
-             "y": self.y + 1},
+                elif zombie.type == "chaos_knight":
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x - 1,
-             "y": self.y - 1},
+                elif zombie.type == "fast":
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x,
-             "y": self.y - 2},
+                else:
+                    return AttackTargetOrder(Point(zombie.x, zombie.y), zombie.blockId)
 
-            {"x": self.x + 1,
-             "y": self.y - 2}
-        }
-        
-        return move_request_map
