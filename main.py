@@ -85,29 +85,30 @@ def main() -> None:
                     # uiThread.start()
                     #ui.Update(unitResponse, worldResponse)
 
-                    ans = None
-                    def ModelAnswer():
-                        global ans
-                        while not modelStopEvent.is_set():
-                            ans = model.Run(unitResponse, worldResponse)
-                            
-                            # Палка в колесе
-                            # time.sleep(0.5)
-                        print("Модель дала ответ")
-
-                    # Создаем событие для остановки потока
-                    modelStopEvent = threading.Event()
-
-                    # Создаем и запускаем поток
-                    modelAnswerThread = threading.Thread(target=ModelAnswer)
-                    modelAnswerThread.start()
+                    ans = model.Run(unitResponse, worldResponse)
                     
-                    # Устанавливаем таймер для остановки потока модели
-                    timer = threading.Timer((int(unitResponse["turnEndsInMs"]) - safeOffset)/1000, modelStopEvent.set)
-                    timer.start()
+                    # def ModelAnswer():
+                    #     global ans
+                    #     while not modelStopEvent.is_set():
+                            
+                            
+                    #         # Палка в колесе
+                    #         # time.sleep(0.5)
+                    #     print("Модель дала ответ")
+
+                    # # Создаем событие для остановки потока
+                    # modelStopEvent = threading.Event()
+
+                    # # Создаем и запускаем поток
+                    # modelAnswerThread = threading.Thread(target=ModelAnswer)
+                    # modelAnswerThread.start()
+                    
+                    # # Устанавливаем таймер для остановки потока модели
+                    # timer = threading.Timer((int(unitResponse["turnEndsInMs"]) - safeOffset)/1000, modelStopEvent.set)
+                    # timer.start()
 
                     # Ждем завершения потока
-                    modelAnswerThread.join()
+                    # modelAnswerThread.join()
                     
                     api.Command(ans)
                     print("Конец хода")
