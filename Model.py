@@ -30,9 +30,15 @@ class Model:
     enemy = []
     worldMap = [[]]
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        pass
+
+    def Run(self, unitResponse, worldResponse):
+        
+
+
+        return {}
+
 
     def checkTheMostDanger(self, zombies):
 

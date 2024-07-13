@@ -42,6 +42,7 @@ def lagCheck(func):
 def main() -> None:
     # Подключение к серверу
     api = Api(testServerURL, token)
+    model = Model
 
     # Предзагрузка раундов
     rounds = lagCheck(Api.GameRounds())["rounds"]
@@ -80,7 +81,9 @@ def main() -> None:
 
                     def ModelAnswer():
                         while not modelStopEvent.is_set():
-                            #Модель
+                            model.Run(unitResponse, worldResponse)
+
+                            # Палка в колесе
                             time.sleep(0.5)
                         print("Модель дала ответ")
 
